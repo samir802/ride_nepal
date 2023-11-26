@@ -45,17 +45,6 @@ class HomeScreen extends StatelessWidget {
                               )),
                         ],
                       ),
-                      const SizedBox(
-                        width: 85,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              "https://i.pinimg.com/736x/55/8c/2a/558c2a5e3a5cc81b1961cbe40369e419.jpg"),
-                        ),
-                      )
                     ],
                   ),
                   const SizedBox(height: 30),
@@ -120,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       TextButton(
                           onPressed: () {
-                            Get.to(const AllVehicleScreen());
+                            Get.to(AllVehicleScreen());
                           },
                           child: const Text(
                             "See all",
@@ -135,7 +124,7 @@ class HomeScreen extends StatelessWidget {
                     height: 15,
                   ),
                   Container(
-                    height: 160,
+                    height: 170,
                     width: Get.width,
                     decoration: const BoxDecoration(
                       boxShadow: [
@@ -161,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 160,
+                          height: 170,
                           width: 160,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
@@ -189,6 +178,9 @@ class HomeScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
+                              ),
+                              const SizedBox(
+                                height: 10,
                               ),
                               const Row(
                                 children: [
