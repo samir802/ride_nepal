@@ -8,7 +8,6 @@ import '../controllers/login_controller.dart';
 import '../utils/colors.dart';
 import '../utils/image_path.dart';
 import '../widgets/customs/elevated_button.dart';
-import 'dash_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -51,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                         height: 20,
                       ),
                       Form(
-                        key: c.formkey,
+                        key: c.formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -77,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                             Obx(
                               () => CustomPasswordField(
                                   hint: "Enter you password",
-                                  eye: c.isPasswordVisible.value,
+                                  eye: c.passwordObscure.value,
                                   onEyeClick: c.onEyeCLick,
                                   controller: c.passwordController,
                                   textInputAction: TextInputAction.next),
@@ -111,12 +110,7 @@ class LoginScreen extends StatelessWidget {
                         child: CustomElevatedButton(
                           title: "Login",
                           onTap: () {
-                            if (c.formkey.currentState!.validate()) {
-                              Get.offAll(() => DashScreen());
-
-                              c.emailController.clear();
-                              c.passwordController.clear();
-                            }
+                            c.onSubmit();
                           },
                         ),
                       ),

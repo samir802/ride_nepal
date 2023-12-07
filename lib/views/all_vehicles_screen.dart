@@ -58,7 +58,7 @@ class VehicleListCard extends StatelessWidget {
         padding: const EdgeInsets.only(top: 20),
         child: Column(children: [
           Container(
-            height: 170,
+            height: 500,
             width: Get.width,
             decoration: const BoxDecoration(
               boxShadow: [
