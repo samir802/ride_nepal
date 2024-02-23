@@ -21,9 +21,9 @@ class RideNepal extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ride Nepal',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
-        useMaterial3: true,
-      ),
+          useMaterial3: true,
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: AppColors.secondaryColor)),
       initialBinding: BindingsBuilder(() {
         Get.put(CoreController());
       }),

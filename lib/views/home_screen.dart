@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ridenepal/utils/colors.dart';
+import 'package:ridenepal/views/Specification_Screen.dart';
 import 'package:ridenepal/views/all_vehicles_screen.dart';
+import 'package:ridenepal/views/search_bar_screen.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
 
 final List<String> imgList = [
@@ -19,206 +22,220 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 30),
         child: SingleChildScrollView(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            getGreeting(),
-                            style: const TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5),
-                          ),
-                          const Text("Samir Shrestha",
-                              style: TextStyle(
-                                fontSize: 18,
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          suffixIcon: const Icon(Icons.search),
-                          hintText: "Search vehicles....",
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.black, width: 2.0),
-                            borderRadius: BorderRadius.circular(5.0),
-                          )),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 125.0,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                    ),
-                    items: imgList.map(
-                      (item) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Image.network(
-                                item,
-                                fit: BoxFit.cover,
-                                height: 50,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ).toList(),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "For you",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Get.to(AllVehicleScreen());
-                          },
-                          child: const Text(
-                            "See all",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                decoration: TextDecoration.underline),
-                          ))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    height: 170,
-                    width: Get.width,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(
-                            5.0,
-                            5.0,
-                          ),
-                          blurRadius: 10.0,
-                          spreadRadius: 2.0,
-                        ),
-                        BoxShadow(
-                          color: Colors.white,
-                          offset: Offset(0.0, 0.0),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 170,
-                          width: 160,
-                          decoration: const BoxDecoration(
+                        Text(
+                          getGreeting(),
+                          style: const TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5),
+                        ),
+                        const Text("Samir Shrestha",
+                            style: TextStyle(
+                              fontSize: 18,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                InkWell(
+                    onTap: () {
+                      Get.to(const SearchBarScreen());
+                    },
+                    child: Container(
+                      width: Get.width,
+                      height: 50,
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                      child: const Row(
+                        children: [
+                          SizedBox(width: 10),
+                          Icon(Icons.search),
+                          SizedBox(width: 20),
+                          Text(
+                            "Search Vehicles...",
+                            style: TextStyle(fontSize: 18),
+                          )
+                        ],
+                      ),
+                    )),
+                const SizedBox(
+                  height: 30,
+                ),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 125.0,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                  ),
+                  items: imgList.map(
+                    (item) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Image.network(
+                              item,
+                              fit: BoxFit.cover,
+                              height: 50,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ).toList(),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "For you",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Get.to(AllVehicleScreen());
+                        },
+                        child: const Text(
+                          "See all",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              decoration: TextDecoration.underline),
+                        ))
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 150,
+                  width: Get.width,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(
+                          2.0,
+                          2.0,
+                        ),
+                        blurRadius: 5.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: Get.height,
+                        width: Get.width / 2.3,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)),
                             image: DecorationImage(
                                 fit: BoxFit.fill,
                                 image: NetworkImage(
-                                    "https://cdn.motor1.com/images/mgl/NGGZon/s3/koenigsegg-gemera.jpg")),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20)),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0, top: 10),
+                                    "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?cs=srgb&dl=pexels-mike-bird-170811.jpg&fm=jpg"))),
+                      ),
+                      SizedBox(
+                        height: Get.height,
+                        width: Get.width / 2.16,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 5, left: 10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Mercedes",
+                              const Text(
+                                "Mercedes",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w900),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Row(children: [
+                                Icon(
+                                  Icons.person,
+                                  size: 30,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    "4 Seats",
                                     style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                ],
+                                ),
+                              ]),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text(
+                                "Rs 5000/day",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: AppColors.secondaryColor,
+                                ),
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 5,
                               ),
-                              const Row(
+                              Row(
                                 children: [
-                                  Icon(
-                                    Icons.person,
-                                    size: 25,
-                                  ),
                                   SizedBox(
-                                    width: 10,
+                                    width: 120,
+                                    child: CustomMediumElevatedButton(
+                                        title: "Book Now",
+                                        onTap: () {
+                                          Get.to(SpecificationScreen());
+                                        }),
                                   ),
-                                  Text("4 seats",
-                                      style: TextStyle(fontSize: 15)),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: const Icon(
+                                        Icons.favorite_border,
+                                        color: AppColors.primaryColor,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ),
                                 ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Text("Rs 5000/Day",
-                                  style: TextStyle(fontSize: 15)),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                width: 125,
-                                child: CustomElevatedButton(
-                                    title: "Book Now", onTap: () {}),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
           ),
         ),

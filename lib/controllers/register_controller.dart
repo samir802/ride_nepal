@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ridenepal/repo/register_repo.dart';
+import 'package:ridenepal/views/login_screen.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 import '../utils/custom_snackbar.dart';
-import '../views/dash_screen.dart';
 
 class RegisterScreenController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -16,6 +17,7 @@ class RegisterScreenController extends GetxController {
   final emailController = TextEditingController();
   final fullNameController = TextEditingController();
   final phoneNoController = TextEditingController();
+  final addressController = TextEditingController();
 
   RxBool isChecked = false.obs;
   void onEyeCLick() {
@@ -32,28 +34,28 @@ class RegisterScreenController extends GetxController {
   void onSubmit() async {
     if (formKey.currentState!.validate() &&
         passwordController.value == confirmPasswordController.value) {
-      Get.to(DashScreen());
+      await RegisterRepo.register(
+          email: emailController.text,
+          name: fullNameController.text,
+          phoneNumber: phoneNoController.text,
+          address: addressController.text,
+          password: passwordController.text,
+          onSuccess: (message) async {
+            loading.hide();
+            CustomSnackBar.success(
+                title: "Register", message: "Register Successful");
+            Get.offAll(() => LoginScreen());
+          },
+          onError: (message) {
+            loading.hide();
+            CustomSnackBar.error(title: "Register", message: message);
+          });
       fullNameController.clear();
       emailController.clear();
       phoneNoController.clear();
+      addressController.clear();
       passwordController.clear();
       confirmPasswordController.clear();
-
-      // await RegisterRepo.register(
-      //     email: emailController.text,
-      //     name: fullNameController.text,
-      //     phoneNumber: phoneNoController.text,
-      //     password: passwordController.text,
-      //     onSuccess: (message) async {
-      //       loading.hide();
-      //       CustomSnackBar.success(
-      //           title: "Register", message: "Register Successful");
-      //       Get.offAll(() => LogInScreen());
-      //     },
-      //     onError: (message) {
-      //       loading.hide();
-      //       CustomSnackBar.error(title: "Register", message: message);
-      //     });
     } else {
       if (passwordController.value != confirmPasswordController.value) {
         CustomSnackBar.error(

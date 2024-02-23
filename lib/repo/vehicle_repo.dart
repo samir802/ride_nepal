@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:ridenepal/models/all_vehicles.dart';
 import 'package:ridenepal/utils/apis.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:ridenepal/utils/custom_snackbar.dart';
 
 class VehicleRepo {
   static Future<void> getVehicle({
@@ -28,8 +28,7 @@ class VehicleRepo {
         onError(data['message']);
       }
     } catch (e) {
-      log(e.toString());
-      onError("Sorry! something went wrong");
+      CustomSnackBar.error(title: "Login", message: "Something went wrong!");
     }
   }
 }

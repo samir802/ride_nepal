@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ridenepal/controllers/vehicle_screen_controller.dart';
 import 'package:ridenepal/models/all_vehicles.dart';
+import 'package:ridenepal/views/Specification_Screen.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
 
 class AllVehicleScreen extends StatelessWidget {
@@ -12,30 +13,30 @@ class AllVehicleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Vehicles"),
-        centerTitle: true,
+        title: const Text(
+          "Vehicles",
+        ),
+        shadowColor: Colors.blueGrey,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
           c.vehicleDetails.clear();
           c.getVehicle();
         },
-        child: SafeArea(
-          child: Obx(
-            () => c.loading.value
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: c.vehicleDetails.length,
-                    itemBuilder: (context, index) {
-                      AllVehicles vehicles = c.vehicleDetails[index];
-                      return VehicleListCard(
-                        vehicles: vehicles,
-                      );
-                    },
-                  ),
-          ),
+        child: Obx(
+          () => c.loading.value
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  itemCount: c.vehicleDetails.length,
+                  itemBuilder: (context, index) {
+                    AllVehicles vehicles = c.vehicleDetails[index];
+                    return VehicleListCard(
+                      vehicles: vehicles,
+                    );
+                  },
+                ),
         ),
       ),
     );
@@ -49,103 +50,100 @@ class VehicleListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Get.to(() => SinglePage(
-        //       doctors: doctors,
-        //     ));
-      },
+      onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Column(children: [
           Container(
-            height: 500,
+            constraints: const BoxConstraints(
+              maxHeight: double.infinity,
+            ),
             width: Get.width,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromARGB(255, 220, 218, 218),
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(
-                    5.0,
-                    5.0,
-                  ),
-                  blurRadius: 10.0,
-                  spreadRadius: 2.0,
+                  color: Colors.grey.shade600,
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 5),
                 ),
-                BoxShadow(
+                const BoxShadow(
                   color: Colors.white,
-                  offset: Offset(0.0, 0.0),
-                  blurRadius: 0.0,
-                  spreadRadius: 0.0,
-                ),
+                  offset: Offset(0, 0),
+                )
               ],
-              borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 170,
-                  width: 160,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                            height: 20,
+                            child: Text(
+                              vehicles.vehicleBrand ?? "",
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            )),
+                        const Icon(
+                          Icons.favorite_border,
+                          color: Colors.red,
+                          size: 30,
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 100,
+                      width: Get.width,
+                      child: const Image(
+                        fit: BoxFit.cover,
                         image: NetworkImage(
-                            "https://cdn.motor1.com/images/mgl/NGGZon/s3/koenigsegg-gemera.jpg")),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20)),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            vehicles.vehicleBrand ?? "",
-                            style: const TextStyle(
+                            "https://cdn.motor1.com/images/mgl/NGGZon/s3/koenigsegg-gemera.jpg"),
+                      ),
+                    ),
+                    const Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 50,
+                          constraints:
+                              const BoxConstraints(maxHeight: double.infinity),
+                          child: const Text(
+                            "Price/day",
+                            style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          // const Icon(
-                          //   Icons.person,
-                          //   size: 25,
-                          // ),
-                          // const SizedBox(
-                          //   width: 10,
-                          // ),
-                          Text(vehicles.capacity ?? "",
-                              style: const TextStyle(fontSize: 15)),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(vehicles.fuelType ?? "",
-                          style: const TextStyle(fontSize: 15)),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        width: 125,
-                        child: CustomElevatedButton(
-                            title: "Book Now", onTap: () {}),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                        ),
+                        Container(
+                            height: 50,
+                            width: 150,
+                            constraints: const BoxConstraints(
+                                maxHeight: double.infinity),
+                            child: CustomMediumElevatedButton(
+                                title: "Book Now",
+                                onTap: () {
+                                  Get.to(SpecificationScreen());
+                                })),
+                      ],
+                    ),
+                  ]),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Divider(),
         ]),
       ),
     );

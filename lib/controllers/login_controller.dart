@@ -44,7 +44,8 @@ class LogInController extends GetxController {
           }),
           onError: (message) {
             loading.hide();
-            CustomSnackBar.error(title: "Login", message: message);
+            CustomSnackBar.error(
+                title: "Login", message: "Something went wrong!");
           });
     }
   }

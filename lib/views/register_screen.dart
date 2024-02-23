@@ -66,21 +66,6 @@ class RegisterScreen extends StatelessWidget {
                             height: 10,
                           ),
                           const Text(
-                            "Email Address",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          CustomTextField(
-                            validator: Validators.checkEmailField,
-                            controller: c.emailController,
-                            hint: "Enter your email address",
-                            textInputAction: TextInputAction.next,
-                            textInputType: TextInputType.emailAddress,
-                            preIconPath: Icons.email,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
                             "Phone No",
                             style: TextStyle(fontSize: 15),
                           ),
@@ -89,7 +74,41 @@ class RegisterScreen extends StatelessWidget {
                             controller: c.phoneNoController,
                             hint: "Enter your phone number",
                             textInputAction: TextInputAction.next,
+                            textInputType: TextInputType.phone,
+                            preIconPath: Icons.phone,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Address",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          CustomTextField(
+                            // validator: Validators.checkPhoneField,
+                            controller: c.addressController,
+                            hint: "Enter your address",
+                            textInputAction: TextInputAction.next,
+                            textInputType: TextInputType.text,
+                            preIconPath: Icons.location_on,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Email",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          CustomTextField(
+                            validator: Validators.checkEmailField,
+                            controller: c.emailController,
+                            hint: "Enter your email",
+                            textInputAction: TextInputAction.next,
                             textInputType: TextInputType.emailAddress,
+                            preIconPath: Icons.email,
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                           const SizedBox(
                             height: 10,
@@ -129,7 +148,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CustomElevatedButton(
+                    CustomMediumElevatedButton(
                         title: "Register",
                         onTap: () {
                           c.onSubmit();

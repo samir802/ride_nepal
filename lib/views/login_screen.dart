@@ -107,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: CustomElevatedButton(
+                        child: CustomMediumElevatedButton(
                           title: "Login",
                           onTap: () {
                             c.onSubmit();
