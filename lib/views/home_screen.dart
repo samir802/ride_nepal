@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ridenepal/controllers/core_controller.dart';
 import 'package:ridenepal/utils/colors.dart';
-import 'package:ridenepal/views/Specification_Screen.dart';
 import 'package:ridenepal/views/all_vehicles_screen.dart';
 import 'package:ridenepal/views/search_bar_screen.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
@@ -17,7 +17,9 @@ final List<String> imgList = [
 ];
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final c = Get.put(CoreController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,8 @@ class HomeScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5),
                         ),
-                        const Text("Samir Shrestha",
-                            style: TextStyle(
+                        Text(c.currentUser.value?.name ?? "",
+                            style: const TextStyle(
                               fontSize: 18,
                             )),
                       ],
@@ -129,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                   height: 150,
                   width: Get.width,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 195, 215, 248),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     boxShadow: [
                       BoxShadow(
@@ -206,10 +208,10 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(
                                     width: 120,
-                                    child: CustomMediumElevatedButton(
+                                    child: CustomLargeElevatedButton(
                                         title: "Book Now",
                                         onTap: () {
-                                          Get.to(SpecificationScreen());
+                                          // Get.to(SpecificationScreen());
                                         }),
                                   ),
                                   Padding(

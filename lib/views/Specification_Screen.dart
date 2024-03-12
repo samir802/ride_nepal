@@ -1,16 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ridenepal/controllers/Phone_controller.dart';
+import 'package:ridenepal/models/all_vehicles.dart';
+import 'package:ridenepal/utils/apis.dart';
 import 'package:ridenepal/utils/colors.dart';
-import 'package:ridenepal/utils/images_path.dart';
+import 'package:ridenepal/utils/image_path.dart';
+import 'package:ridenepal/views/booking_process.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
 
 class SpecificationScreen extends StatelessWidget {
-  SpecificationScreen({super.key});
+  SpecificationScreen({super.key, required this.vehicles});
 
   final c = Get.put(PhoneController());
+  final AllVehicles vehicles;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +37,15 @@ class SpecificationScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Mercedes",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      vehicles.vehicleBrand ?? "",
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           "4.5",
@@ -58,14 +63,19 @@ class SpecificationScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: 400,
-                  height: 200,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          "https://imgd.aeplcdn.com/370x208/n/cw/ec/40432/scorpio-n-exterior-right-front-three-quarter-75.jpeg?isig=0&q=80"),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: CachedNetworkImage(
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    fit: BoxFit.fill,
+                    height: MediaQuery.of(context).size.height / 3,
+                    imageUrl:
+                        ("${Api.baseUrl}/uploads/${vehicles.vehicleImage ?? " "}"),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/phone.svg',
+                      height: MediaQuery.of(context).size.height / 2.7,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
@@ -105,7 +115,7 @@ class SpecificationScreen extends StatelessWidget {
                                     ImagePath.seat,
                                   ),
                                 ),
-                                const Text("7 seats")
+                                Text("${vehicles.capacity ?? " "} seats")
                               ],
                             ),
                             Column(
@@ -117,7 +127,7 @@ class SpecificationScreen extends StatelessWidget {
                                     ImagePath.engineCC,
                                   ),
                                 ),
-                                const Text("2955 cc")
+                                Text("${vehicles.engineCapacity ?? " "} cc")
                               ],
                             ),
                             Column(
@@ -129,7 +139,7 @@ class SpecificationScreen extends StatelessWidget {
                                     ImagePath.meter,
                                   ),
                                 ),
-                                const Text("11 kmpl")
+                                Text("${vehicles.fuelConsumption ?? " "} kmpl")
                               ],
                             ),
                             Column(
@@ -141,7 +151,7 @@ class SpecificationScreen extends StatelessWidget {
                                     ImagePath.manual,
                                   ),
                                 ),
-                                const Text("Manual")
+                                Text(vehicles.drivingMethod ?? " ")
                               ],
                             ),
                             Column(
@@ -154,8 +164,8 @@ class SpecificationScreen extends StatelessWidget {
                                     ImagePath.fuel,
                                   ),
                                 ),
-                                const Text(
-                                  "Diesel",
+                                Text(
+                                  vehicles.fuelType ?? " ",
                                 )
                               ],
                             ),
@@ -175,22 +185,28 @@ class SpecificationScreen extends StatelessWidget {
                   onTap: () {},
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 30,
-                        backgroundImage: AssetImage(ImagePath.renterProfile),
+                        backgroundImage: CachedNetworkImageProvider(
+                            "${Api.baseUrl}/uploads/${vehicles.image}"),
                       ),
                       const SizedBox(width: 20),
-                      const Text(
-                        "Shishir Rentals Pvt. Ltd",
-                        style: TextStyle(
+                      Text(
+                        vehicles.companyName ?? " ",
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       const SizedBox(width: 20),
-                      SizedBox(
-                        width: 35,
-                        height: 35,
-                        child: SvgPicture.asset(
-                          ImagePath.phone,
+                      InkWell(
+                        onTap: () {
+                          c.launchPhoneNumber(vehicles.phone ?? " ");
+                        },
+                        child: SizedBox(
+                          width: 35,
+                          height: 35,
+                          child: SvgPicture.asset(
+                            ImagePath.phone,
+                          ),
                         ),
                       ),
                     ],
@@ -219,9 +235,9 @@ class SpecificationScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Rs 5000/day",
-                style: TextStyle(
+              Text(
+                "Rs ${vehicles.price ?? " "}/day",
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -229,7 +245,12 @@ class SpecificationScreen extends StatelessWidget {
               SizedBox(
                   width: 150,
                   child: CustomLargeElevatedButton(
-                      title: "Rent Now", onTap: () {})),
+                      title: "Rent Now",
+                      onTap: () {
+                        Get.to(() => BookingProcess(
+                              vehicles: vehicles,
+                            ));
+                      })),
             ],
           ),
         ),

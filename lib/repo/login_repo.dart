@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:ridenepal/models/users.dart';
@@ -28,9 +27,7 @@ class LoginRepo {
         onError(data['message']);
       }
     } catch (e, s) {
-      log(e.toString());
-      log(s.toString());
-      onError("Sorry! something went wrong");
+      onError("$e,$s");
     }
   }
 }

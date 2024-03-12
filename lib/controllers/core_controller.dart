@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ridenepal/views/login_screen.dart';
@@ -19,8 +17,6 @@ class CoreController extends GetxController {
   Future<void> loadCurrentUser() async {
     currentUser.value = StorageHelper.getUser();
     userToken.value = StorageHelper.getToken();
-    log("current user----------------------${currentUser.value?.email}-");
-    log("current user token----------------------${userToken.value}-");
   }
 
   bool isUserLoggedIn() {

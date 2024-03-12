@@ -28,7 +28,6 @@ class RegisterRepo {
       };
       http.Response response = await http.post(Uri.parse(Api.registerUrl),
           headers: headers, body: body);
-      log(Api.registerUrl);
 
       dynamic data = jsonDecode(response.body);
       if (response.statusCode >= 200 && response.statusCode < 300) {

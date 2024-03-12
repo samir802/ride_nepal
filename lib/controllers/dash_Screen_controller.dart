@@ -9,9 +9,9 @@ import '../views/home_screen.dart';
 class DashScreenController extends GetxController {
   final key = GlobalKey<ScaffoldState>();
   final List<Widget> pages = [
-    const HomeScreen(),
+    HomeScreen(),
     AllVehicleScreen(),
-    const History(),
+    History(),
     ProfileScreen(),
   ];
 }

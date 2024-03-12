@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,12 +34,13 @@ class LogInController extends GetxController {
           email: emailController.text,
           password: passwordController.text,
           onSuccess: ((user, token) async {
+            log(user.toString());
             loading.hide();
             final box = GetStorage();
             await box.write(StorageKeys.USER, json.encode(user.toJson()));
             await box.write(StorageKeys.ACCESS_TOKEN, token);
             Get.find<CoreController>().loadCurrentUser();
-            Get.offAll(() => DashScreen());
+            Get.offAll(DashScreen());
             CustomSnackBar.success(
                 title: "Login", message: "Login Successfully");
           }),
@@ -46,6 +48,7 @@ class LogInController extends GetxController {
             loading.hide();
             CustomSnackBar.error(
                 title: "Login", message: "Something went wrong!");
+            log(message);
           });
     }
   }

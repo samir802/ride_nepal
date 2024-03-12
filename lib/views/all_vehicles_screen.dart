@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ridenepal/controllers/vehicle_screen_controller.dart';
 import 'package:ridenepal/models/all_vehicles.dart';
+import 'package:ridenepal/utils/apis.dart';
 import 'package:ridenepal/views/Specification_Screen.dart';
-import 'package:ridenepal/widgets/customs/elevated_button.dart';
 
 class AllVehicleScreen extends StatelessWidget {
   AllVehicleScreen({super.key});
@@ -13,10 +14,8 @@ class AllVehicleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Vehicles",
-        ),
-        shadowColor: Colors.blueGrey,
+        title: const Text("Vehicles"),
+        centerTitle: true,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -28,7 +27,12 @@ class AllVehicleScreen extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : ListView.builder(
+              : GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 0.9,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15),
                   itemCount: c.vehicleDetails.length,
                   itemBuilder: (context, index) {
                     AllVehicles vehicles = c.vehicleDetails[index];
@@ -50,100 +54,57 @@ class VehicleListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-        child: Column(children: [
-          Container(
-            constraints: const BoxConstraints(
-              maxHeight: double.infinity,
+      onTap: () {
+        Get.to(() => SpecificationScreen(
+              vehicles: vehicles,
+            ));
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
             ),
-            width: Get.width,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromARGB(255, 220, 218, 218),
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade600,
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(
+                  2.0,
+                  2.0,
                 ),
-                const BoxShadow(
-                  color: Colors.white,
-                  offset: Offset(0, 0),
-                )
+                blurRadius: 5.0,
+                spreadRadius: 1.0,
+              )
+            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            width: Get.width,
+            height: 100,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            ),
+            child: CachedNetworkImage(
+                fit: BoxFit.fill,
+                imageUrl: "${Api.baseUrl}/uploads/${vehicles.vehicleImage}"),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  vehicles.vehicleBrand ?? " ",
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Rs ${vehicles.price ?? " "}/day",
+                ),
               ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                            height: 20,
-                            child: Text(
-                              vehicles.vehicleBrand ?? "",
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            )),
-                        const Icon(
-                          Icons.favorite_border,
-                          color: Colors.red,
-                          size: 30,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 100,
-                      width: Get.width,
-                      child: const Image(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://cdn.motor1.com/images/mgl/NGGZon/s3/koenigsegg-gemera.jpg"),
-                      ),
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 50,
-                          constraints:
-                              const BoxConstraints(maxHeight: double.infinity),
-                          child: const Text(
-                            "Price/day",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Container(
-                            height: 50,
-                            width: 150,
-                            constraints: const BoxConstraints(
-                                maxHeight: double.infinity),
-                            child: CustomMediumElevatedButton(
-                                title: "Book Now",
-                                onTap: () {
-                                  Get.to(SpecificationScreen());
-                                })),
-                      ],
-                    ),
-                  ]),
-            ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Divider(),
         ]),
       ),
     );

@@ -67,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                               validator: Validators.checkEmailField,
                             ),
                             const SizedBox(
-                              height: 15,
+                              height: 10,
                             ),
                             const Text(
                               "Password",
@@ -97,22 +97,11 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 39, 37, 37),
-                              blurRadius: 10.0,
-                              offset: Offset(3, 5),
-                            ),
-                          ],
-                        ),
-                        child: CustomMediumElevatedButton(
-                          title: "Login",
-                          onTap: () {
-                            c.onSubmit();
-                          },
-                        ),
+                      CustomLargeElevatedButton(
+                        title: "Login",
+                        onTap: () {
+                          c.onSubmit();
+                        },
                       ),
                       const SizedBox(
                         height: 10,

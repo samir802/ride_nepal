@@ -23,6 +23,8 @@ class DashScreen extends StatelessWidget {
       extendBody: true,
       bottomNavigationBar: (c.pages.length <= maxCount)
           ? AnimatedNotchBottomBar(
+              kIconSize: 20,
+              kBottomRadius: 3,
               notchBottomBarController: _controller,
               bottomBarItems: const [
                 BottomBarItem(

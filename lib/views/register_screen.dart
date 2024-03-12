@@ -148,7 +148,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CustomMediumElevatedButton(
+                    CustomLargeElevatedButton(
                         title: "Register",
                         onTap: () {
                           c.onSubmit();
