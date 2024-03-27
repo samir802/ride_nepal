@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import '../utils/apis.dart';
 
 import 'package:http/http.dart' as http;
@@ -10,7 +9,9 @@ import '../utils/storage_keys.dart';
 class BookingRepo {
   static Future<void> addBooking({
     required String vehicleId,
-    required String date,
+    required String startDate,
+    required String returnDate,
+    required String totalPrice,
     required Function() onSuccess,
     required Function(String message) onError,
   }) async {
@@ -22,14 +23,13 @@ class BookingRepo {
       var body = {
         "vehicleId": vehicleId,
         "token": token,
-        "rentedDate": date,
-        "status": "pending",
+        "startDate": startDate,
+        "returnDate": returnDate,
+        "totalPrice": totalPrice,
+        "status": "Pending",
       };
       http.Response response = await HttpRequest.post(Uri.parse(Api.addBooking),
           headers: headers, body: body);
-
-      log(json.encode(body));
-      log(response.body);
 
       dynamic data = jsonDecode(response.body);
       if (data["success"] == true) {
@@ -37,9 +37,7 @@ class BookingRepo {
       } else {
         onError(data["message"]);
       }
-    } catch (e, s) {
-      log(e.toString());
-      log(s.toString());
+    } catch (e) {
       onError("Sorry something went wrong");
     }
   }

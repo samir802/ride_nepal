@@ -17,30 +17,44 @@ class AllVehicleScreen extends StatelessWidget {
         title: const Text("Vehicles"),
         centerTitle: true,
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          c.vehicleDetails.clear();
-          c.getVehicle();
-        },
-        child: Obx(
-          () => c.loading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 0.9,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15),
-                  itemCount: c.vehicleDetails.length,
-                  itemBuilder: (context, index) {
-                    AllVehicles vehicles = c.vehicleDetails[index];
-                    return VehicleListCard(
-                      vehicles: vehicles,
-                    );
-                  },
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            c.vehicleDetails.clear();
+            c.getVehicle();
+          },
+          child: Obx(
+            () => c.loading.value
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                :
+                // ListView.builder(
+                //     itemCount: c.vehicleDetails.length,
+                //     itemBuilder: (context, index) {
+                //       AllVehicles vehicles = c.vehicleDetails[index];
+                //       return VehicleListCard(
+                //         vehicles: vehicles,
+                //       );
+                //     },
+                //   ),
+                GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.9,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15),
+                    itemCount: c.vehicleDetails.length,
+                    itemBuilder: (context, index) {
+                      AllVehicles vehicles = c.vehicleDetails[index];
+                      return VehicleListCard(
+                        vehicles: vehicles,
+                      );
+                    },
+                  ),
+          ),
         ),
       ),
     );
@@ -79,14 +93,16 @@ class VehicleListCard extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             width: Get.width,
-            height: 100,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            ),
-            child: CachedNetworkImage(
-                fit: BoxFit.fill,
-                imageUrl: "${Api.baseUrl}/uploads/${vehicles.vehicleImage}"),
+            height: 135,
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: CachedNetworkImageProvider(
+                        "${Api.imageFolderPath}${vehicles.vehicleImage}"))),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),

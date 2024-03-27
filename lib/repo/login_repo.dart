@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:ridenepal/models/users.dart';
 import 'package:ridenepal/utils/apis.dart';
@@ -18,16 +17,28 @@ class LoginRepo {
       var body = {"email": email, "password": password, "type": "customer"};
       http.Response response = await http.post(Uri.parse(Api.loginUrl),
           headers: headers, body: body);
-      dynamic data = jsonDecode(response.body);
+
+      // Check if response status code indicates success
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        String accessToken = data["token"].toString();
-        User user = User.fromJson(data["user"]);
-        onSuccess(user, accessToken);
+        // Check if response content type is JSON
+        if (response.headers['content-type']?.contains('application/json') ??
+            false) {
+          dynamic data = jsonDecode(response.body);
+          String accessToken = data["token"].toString();
+          User user = User.fromJson(data["user"]);
+          onSuccess(user, accessToken);
+        } else {
+          // Response is not JSON
+          onError("Response is not JSON.");
+        }
       } else {
+        // Response status code indicates failure
+        dynamic data = jsonDecode(response.body);
         onError(data['message']);
       }
     } catch (e, s) {
-      onError("$e,$s");
+      // Error occurred
+      onError("$e$s");
     }
   }
 }

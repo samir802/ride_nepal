@@ -3,15 +3,30 @@ import 'package:get/get.dart';
 import 'package:ridenepal/views/Profile_screen.dart';
 import 'package:ridenepal/views/all_vehicles_screen.dart';
 import 'package:ridenepal/views/history.dart';
-
 import '../views/home_screen.dart';
 
 class DashScreenController extends GetxController {
+  // final key = GlobalKey<ScaffoldState>();
+  // final List<Widget> pages = [
+  //   HomeScreen(),
+  //   AllVehicleScreen(),
+  //   History(),
+  //   ProfileScreen(),
+  // ];
+
   final key = GlobalKey<ScaffoldState>();
-  final List<Widget> pages = [
-    HomeScreen(),
-    AllVehicleScreen(),
-    History(),
-    ProfileScreen(),
-  ];
+  RxList<Widget> pages = RxList(
+    [
+      HomeScreen(),
+      AllVehicleScreen(),
+      History(),
+      ProfileScreen(),
+    ],
+  );
+
+  RxInt currentIndex = RxInt(0);
+
+  void onItemTapped(int index) {
+    currentIndex.value = index;
+  }
 }

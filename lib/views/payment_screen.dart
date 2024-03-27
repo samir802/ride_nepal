@@ -11,10 +11,17 @@ import '../utils/custom_text_style.dart';
 import '../utils/image_path.dart';
 
 class PaymentScreen extends StatelessWidget {
-  PaymentScreen({super.key, required this.vehicleId, required this.date});
+  PaymentScreen(
+      {super.key,
+      required this.vehicleId,
+      required this.startDate,
+      required this.returnDate,
+      required this.totalPrice});
 
   final String vehicleId;
-  final String date;
+  final String startDate;
+  final String returnDate;
+  final String totalPrice;
 
   final c = Get.put(AddBookingDetailsScreen());
   final d = Get.put(HistoryScreenController());
@@ -60,7 +67,7 @@ class PaymentScreen extends StatelessWidget {
                     PaymentPreference.khalti,
                   ],
                   onSuccess: (success) {
-                    c.addBooking(vehicleId, date);
+                    c.addBooking(vehicleId, startDate, returnDate,totalPrice);
                     d.historyDetail.clear();
                     d.getAllHistory();
                   },

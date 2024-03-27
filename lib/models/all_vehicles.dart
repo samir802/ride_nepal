@@ -4,6 +4,7 @@ List<AllVehicles> allVehiclesFromJson(List<dynamic> allVehiclesFromJson) =>
 
 class AllVehicles {
   String? vehicleID;
+  String? vehicleInfo;
   String? vehicleBrand;
   String? capacity;
   String? engineCapacity;
@@ -18,9 +19,11 @@ class AllVehicles {
   String? address;
   String? email;
   String? image;
+  String? rating;
 
   AllVehicles(
       {this.vehicleID,
+      this.vehicleInfo,
       this.vehicleBrand,
       this.capacity,
       this.engineCapacity,
@@ -34,10 +37,12 @@ class AllVehicles {
       this.phone,
       this.address,
       this.email,
-      this.image});
+      this.image,
+      this.rating});
 
   AllVehicles.fromJson(Map<String, dynamic> json) {
     vehicleID = json['VehicleID'];
+    vehicleInfo = json['Vehicle_Info'];
     vehicleBrand = json['VehicleBrand'];
     capacity = json['Capacity'];
     engineCapacity = json['Engine_capacity'];
@@ -52,11 +57,13 @@ class AllVehicles {
     address = json['address'];
     email = json['email'];
     image = json['Image'];
+    rating = json['Rating'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['VehicleID'] = vehicleID;
+    data['Vehicle_Info'] = vehicleInfo;
     data['VehicleBrand'] = vehicleBrand;
     data['Capacity'] = capacity;
     data['Engine_capacity'] = engineCapacity;
@@ -71,6 +78,7 @@ class AllVehicles {
     data['address'] = address;
     data['email'] = email;
     data['Image'] = image;
+    data['Rating'] = rating;
     return data;
   }
 }

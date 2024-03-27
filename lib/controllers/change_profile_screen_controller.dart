@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// ignore: depend_on_referenced_packages
 import "package:async/async.dart";
 import 'package:get/get.dart';
 

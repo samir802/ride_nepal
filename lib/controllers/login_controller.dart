@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -34,7 +33,6 @@ class LogInController extends GetxController {
           email: emailController.text,
           password: passwordController.text,
           onSuccess: ((user, token) async {
-            log(user.toString());
             loading.hide();
             final box = GetStorage();
             await box.write(StorageKeys.USER, json.encode(user.toJson()));
@@ -48,7 +46,6 @@ class LogInController extends GetxController {
             loading.hide();
             CustomSnackBar.error(
                 title: "Login", message: "Something went wrong!");
-            log(message);
           });
     }
   }

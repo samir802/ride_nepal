@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:ridenepal/controllers/core_controller.dart';
 import 'package:ridenepal/utils/apis.dart';
 import 'package:ridenepal/views/edit_profile_screen.dart';
@@ -26,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
             CircleAvatar(
               radius: 70,
               backgroundImage: CachedNetworkImageProvider(
-                  "${Api.baseUrl}/uploads/${c.currentUser.value?.image ?? " "}"),
+                  "${Api.baseUrl}/uploads/${c.currentUser.value?.image}"),
             ),
             const SizedBox(
               height: 10,
@@ -34,19 +35,21 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(
               width: Get.width,
               height: 60,
-              child: Column(
-                children: [
-                  Text(
-                    c.currentUser.value?.name ?? " ",
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    c.currentUser.value?.email ?? " ",
-                    style: const TextStyle(
-                        fontSize: 15, color: Color.fromARGB(255, 74, 74, 74)),
-                  ),
-                ],
+              child: Obx(
+                () => Column(
+                  children: [
+                    Text(
+                      c.currentUser.value?.name ?? " ",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      c.currentUser.value?.email ?? " ",
+                      style: const TextStyle(
+                          fontSize: 15, color: Color.fromARGB(255, 74, 74, 74)),
+                    ),
+                  ],
+                ),
               ),
             ),
             const Padding(

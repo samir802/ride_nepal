@@ -45,13 +45,13 @@ class SpecificationScreen extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    const Row(
+                    Row(
                       children: [
                         Text(
-                          "4.5",
-                          style: TextStyle(fontSize: 18),
+                          vehicles.rating ?? "5.0",
+                          style: const TextStyle(fontSize: 18),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.star,
                           size: 25,
                           color: Colors.amber,
@@ -71,7 +71,7 @@ class SpecificationScreen extends StatelessWidget {
                     fit: BoxFit.fill,
                     height: MediaQuery.of(context).size.height / 3,
                     imageUrl:
-                        ("${Api.baseUrl}/uploads/${vehicles.vehicleImage ?? " "}"),
+                        ("${Api.imageFolderPath}${vehicles.vehicleImage ?? " "}"),
                     errorWidget: (context, url, error) => Image.asset(
                       'assets/images/phone.svg',
                       height: MediaQuery.of(context).size.height / 2.7,
@@ -93,9 +93,10 @@ class SpecificationScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const ExpandableText(
-                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam volupt Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam volupt Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam volupt ',
-                          style: TextStyle(color: AppColors.textGreyColor),
+                        ExpandableText(
+                          vehicles.vehicleInfo ?? '',
+                          style:
+                              const TextStyle(color: AppColors.textGreyColor),
                           textAlign: TextAlign.justify,
                           expandText: 'Read more',
                           collapseText: 'Read less',
@@ -188,7 +189,7 @@ class SpecificationScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 30,
                         backgroundImage: CachedNetworkImageProvider(
-                            "${Api.baseUrl}/uploads/${vehicles.image}"),
+                            "${Api.imageFolderPath}${vehicles.image}"),
                       ),
                       const SizedBox(width: 20),
                       Text(

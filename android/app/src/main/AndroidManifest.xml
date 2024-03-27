@@ -2,9 +2,12 @@
     package="com.example.ride_nepal">
 
     <application
+    
         android:label="Ride Nepal"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:enableOnBackInvokedCallback="true"
+        >
 
         <activity
             android:name=".MainActivity"
