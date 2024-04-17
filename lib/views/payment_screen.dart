@@ -3,11 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:ridenepal/controllers/add_booking_details.dart';
+import 'package:ridenepal/controllers/esewa_controller.dart';
 import 'package:ridenepal/controllers/history_controller.dart';
 
-import '../utils/colors.dart';
 import '../utils/custom_snackbar.dart';
-import '../utils/custom_text_style.dart';
 import '../utils/image_path.dart';
 
 class PaymentScreen extends StatelessWidget {
@@ -29,9 +28,9 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Payment",
-          style: CustomTextStyles.f14W400(),
+          style: TextStyle(fontSize: 25),
         ),
         elevation: 0.5,
         shadowColor: const Color(0xFF494949).withOpacity(0.06),
@@ -54,7 +53,15 @@ class PaymentScreen extends StatelessWidget {
           vertical: 22,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              "Select Payment Method",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             InkWell(
               onTap: () {
                 KhaltiScope.of(context).pay(
@@ -67,11 +74,11 @@ class PaymentScreen extends StatelessWidget {
                     PaymentPreference.khalti,
                   ],
                   onSuccess: (success) {
-                    c.addBooking(vehicleId, startDate, returnDate,totalPrice);
+                    c.addBooking(vehicleId, startDate, returnDate, totalPrice);
                     d.historyDetail.clear();
                     d.getAllHistory();
                   },
-                  onFailure: (fa) {
+                  onFailure: (failure) {
                     CustomSnackBar.error(
                         title: "Payment", message: "Payment Failure");
                   },
@@ -85,7 +92,8 @@ class PaymentScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 decoration: BoxDecoration(
-                  color: AppColors.backGroundColor,
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -104,9 +112,51 @@ class PaymentScreen extends StatelessWidget {
                     const SizedBox(
                       width: 30,
                     ),
-                    Text(
+                    const Text(
                       "Khalti",
-                      style: CustomTextStyles.f16W400(),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            InkWell(
+              onTap: () {
+                Esewa esewa = Esewa();
+                esewa.pay(vehicleId, startDate, returnDate, totalPrice);
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: const Offset(1, 1),
+                        spreadRadius: 1,
+                        color: const Color(0xFF494949).withOpacity(0.1),
+                        blurRadius: 9),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      ImagePath.esewa,
+                      height: 46,
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    const Text(
+                      "Esewa",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     )
                   ],
                 ),

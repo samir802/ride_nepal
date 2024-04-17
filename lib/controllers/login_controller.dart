@@ -11,7 +11,7 @@ import 'package:ridenepal/views/dash_screen.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class LogInController extends GetxController {
-  final formKey = GlobalKey<FormState>();
+  final loginKey = GlobalKey<FormState>();
 
   RxBool passwordObscure = true.obs;
 
@@ -27,13 +27,14 @@ class LogInController extends GetxController {
   }
 
   void onSubmit() async {
-    if (formKey.currentState!.validate()) {
+    if (loginKey.currentState!.validate()) {
       loading.show(message: "Please wait..");
       await LoginRepo.login(
           email: emailController.text,
           password: passwordController.text,
           onSuccess: ((user, token) async {
             loading.hide();
+
             final box = GetStorage();
             await box.write(StorageKeys.USER, json.encode(user.toJson()));
             await box.write(StorageKeys.ACCESS_TOKEN, token);
@@ -41,11 +42,13 @@ class LogInController extends GetxController {
             Get.offAll(DashScreen());
             CustomSnackBar.success(
                 title: "Login", message: "Login Successfully");
+            emailController.clear();
+            passwordController.clear();
           }),
           onError: (message) {
             loading.hide();
-            CustomSnackBar.error(
-                title: "Login", message: "Something went wrong!");
+            CustomSnackBar.error(title: "Login", message: "Login failed");
+            log(message);
           });
     }
   }

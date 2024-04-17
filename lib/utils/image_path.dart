@@ -3,6 +3,10 @@ class ImagePath {
   static const String baseIconPath = "assets/icons";
 
   static const String logo = "$baseImagePath/appLogo.png";
+  static const String defaultProfile = "$baseImagePath/defaultProfile.jpg";
+  static const String logoGif = "$baseImagePath/logogif.gif";
+  static const String loginGif = "$baseImagePath/loginGif.gif";
+  static const String registerGif = "$baseImagePath/registerGif.gif";
 
   static const String eye = "$baseIconPath/eye.svg";
   static const String eyeOff = "$baseIconPath/eye_off.svg";
@@ -12,8 +16,8 @@ class ImagePath {
   static const String manual = "$baseImagePath/363283-200.svg";
   static const String fuel = "$baseImagePath/download.svg";
 
-  static const String renterProfile = "$baseImagePath/download.jpg";
   static const String phone = "$baseImagePath/phone.svg";
 
   static const String khalti = "$baseImagePath/khalti.svg";
+  static const String esewa = "$baseImagePath/Esewa.svg";
 }

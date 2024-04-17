@@ -7,7 +7,7 @@ import 'package:ridenepal/views/dash_screen.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class AddRatingController extends GetxController {
-  final formKey = GlobalKey<FormState>();
+  final ratingKey = GlobalKey<FormState>();
 
   final TextEditingController comment = TextEditingController();
   final e = Get.put(VehicleScreenController());

@@ -7,6 +7,7 @@ import 'package:ridenepal/controllers/vehicle_screen_controller.dart';
 import 'package:ridenepal/models/history_model.dart';
 import 'package:ridenepal/utils/apis.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
+import 'package:intl/intl.dart';
 
 class OrderDetailsClass extends StatelessWidget {
   OrderDetailsClass({super.key, required this.historyDetails});
@@ -23,6 +24,9 @@ class OrderDetailsClass extends StatelessWidget {
     int differenceInDays = returnDate.difference(startDate).inDays + 1;
     String orderId = historyDetails.orderId ?? "";
     String userId = c.currentUser.value?.id ?? "";
+    String bookedDate = DateFormat('yyyy-MM-dd')
+        .format(DateTime.parse(historyDetails.rentedDate ?? ""));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Details"),
@@ -46,10 +50,10 @@ class OrderDetailsClass extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 "Order Details",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                "Booked Date: ${historyDetails.rentedDate ?? ""}",
+                "Booked Date: $bookedDate",
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 5),
@@ -63,65 +67,63 @@ class OrderDetailsClass extends StatelessWidget {
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 15),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Give Review",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 5),
-                      Form(
-                        key: d.formKey,
-                        child: Obx(
-                          () => Row(
-                            children: List.generate(5, (index) {
-                              return IconButton(
-                                onPressed: () {
-                                  if (index + 1 == d.currentRating.value) {
-                                    d.updateRating(0);
-                                  } else {
-                                    d.updateRating(index + 1);
-                                  }
-                                },
-                                icon: Icon(
-                                  index < d.currentRating.value
-                                      ? Icons.star
-                                      : Icons.star_border,
-                                  color: index < d.currentRating.value
-                                      ? Colors.amber
-                                      : Colors.black,
-                                  size: 30,
-                                ),
-                              );
-                            }),
-                          ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Give Review",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 5),
+                    Form(
+                      key: d.ratingKey,
+                      child: Obx(
+                        () => Row(
+                          children: List.generate(5, (index) {
+                            return IconButton(
+                              onPressed: () {
+                                if (index + 1 == d.currentRating.value) {
+                                  d.updateRating(0);
+                                } else {
+                                  d.updateRating(index + 1);
+                                }
+                              },
+                              icon: Icon(
+                                index < d.currentRating.value
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: index < d.currentRating.value
+                                    ? Colors.amber
+                                    : Colors.black,
+                                size: 30,
+                              ),
+                            );
+                          }),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: d.comment,
-                        decoration: const InputDecoration(
-                          labelText: 'Comment (optional)',
-                          border: OutlineInputBorder(),
-                        ),
-                        textInputAction: TextInputAction.done,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: d.comment,
+                      decoration: const InputDecoration(
+                        labelText: 'Comment (optional)',
+                        border: OutlineInputBorder(),
                       ),
-                      const SizedBox(height: 10),
-                      CustomLargeElevatedButton(
-                        onTap: () {
-                          d.onSubmit(d.currentRating.value,
-                              d.comment.value.text, userId, orderId);
-                          d.comment.clear();
-                        },
-                        title: 'Submit Review',
-                      ),
-                    ],
-                  ),
+                      textInputAction: TextInputAction.done,
+                    ),
+                    const SizedBox(height: 10),
+                    CustomLargeElevatedButton(
+                      onTap: () {
+                        d.onSubmit(d.currentRating.value, d.comment.value.text,
+                            userId, orderId);
+                        d.comment.clear();
+                      },
+                      title: 'Submit Review',
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gif/gif.dart';
 import 'package:ridenepal/utils/validator.dart';
+import 'package:ridenepal/views/change_password_with_email.dart';
 import 'package:ridenepal/widgets/customs/custom_password_fields.dart';
 import 'package:ridenepal/widgets/customs/custom_textfield.dart';
 
 import '../controllers/login_controller.dart';
-import '../utils/colors.dart';
 import '../utils/image_path.dart';
 import '../widgets/customs/elevated_button.dart';
 import 'register_screen.dart';
@@ -23,12 +24,18 @@ class LoginScreen extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                const CircleAvatar(
-                  radius: 100,
-                  backgroundImage: AssetImage(ImagePath.logo),
+                SizedBox(
+                  width: Get.width,
+                  height: 200,
+                  child: Gif(
+                    fit: BoxFit.fill,
+                    autostart: Autostart.loop,
+                    placeholder: (context) =>
+                        const Center(child: CircularProgressIndicator()),
+                    image: const AssetImage(
+                      ImagePath.registerGif,
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -36,21 +43,26 @@ class LoginScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Login",
+                        "Welcome Back",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 24,
-                          letterSpacing: 5,
                         ),
+                      ),
+                      const Text(
+                        "Enter your email & password",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 85, 84, 84),
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Form(
-                        key: c.formKey,
+                        key: c.loginKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -90,7 +102,9 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(left: 190),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(EmailPasswordChange());
+                          },
                           child: const Text(
                             "Forgot Password?",
                             style: TextStyle(color: Colors.black),
@@ -116,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                             },
                             child: const Text(
                               "Sign up",
-                              style: TextStyle(color: AppColors.rejected),
+                              style: TextStyle(color: Colors.red),
                             ),
                           ),
                         ],

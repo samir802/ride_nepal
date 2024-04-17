@@ -1,16 +1,17 @@
 List<ProfileDetails> profileDetailsFromJson(
         List<dynamic> profileDetailsFromJson) =>
     List<ProfileDetails>.from(profileDetailsFromJson
-        .map((bookingJson) => ProfileDetails.fromJson(bookingJson)));
+        .map((profileJson) => ProfileDetails.fromJson(profileJson)));
 
 class ProfileDetails {
-  int? id;
+  String? id;
   String? name;
   String? phone;
   String? address;
   String? email;
   String? password;
   String? image;
+  String? type;
 
   ProfileDetails(
       {this.id,
@@ -19,7 +20,8 @@ class ProfileDetails {
       this.address,
       this.email,
       this.password,
-      this.image});
+      this.image,
+      this.type});
 
   ProfileDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -29,6 +31,7 @@ class ProfileDetails {
     email = json['email'];
     password = json['password'];
     image = json['Image'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +43,7 @@ class ProfileDetails {
     data['email'] = email;
     data['password'] = password;
     data['Image'] = image;
+    data['type'] = type;
     return data;
   }
 }

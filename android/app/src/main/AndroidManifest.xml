@@ -5,6 +5,7 @@
     
         android:label="Ride Nepal"
         android:name="${applicationName}"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true"
         >

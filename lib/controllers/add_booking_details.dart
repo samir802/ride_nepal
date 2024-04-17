@@ -22,12 +22,11 @@ class AddBookingDetailsScreen extends GetxController {
         c.getAllHistory();
 
         Get.offAll(() => DashScreen());
-        CustomSnackBar.success(
-            title: "Booking", message: "Booking is done sucessfully");
+        CustomSnackBar.success(title: "Booking", message: "Booking success");
       },
       onError: ((message) {
         loading.value = false;
-        CustomSnackBar.error(title: "Booking", message: message);
+        CustomSnackBar.error(title: "Booking", message: "Booking failed");
       }),
     );
   }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:ridenepal/models/all_vehicles.dart';
 import 'package:ridenepal/utils/apis.dart';
 import 'package:http/http.dart' as http;
@@ -53,39 +52,6 @@ class VehicleRepo {
       }
     } catch (e) {
       CustomSnackBar.error(title: "Popular Vehicle", message: "$e");
-    }
-  }
-
-  static Future<List<Map<String, dynamic>>> searchMenuItems(
-      String query) async {
-    final response = await http.get(Uri.parse('${Api.searchApi}?value=$query'));
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.cast<Map<String, dynamic>>();
-    } else {
-      return [];
-    }
-  }
-
-  static Future<void> searchVehicleItems({
-    required Function(List<AllVehicles> category) onSuccess,
-    required Function(String message) onError,
-    required String query,
-  }) async {
-    try {
-      http.Response response =
-          await http.get(Uri.parse('${Api.searchApi}?value=$query'));
-      if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body)["data"];
-        List<AllVehicles> vehicles =
-            data.map((item) => AllVehicles.fromJson(item)).toList();
-        onSuccess(vehicles);
-        log("list:${vehicles.toString()}");
-      } else {
-        onError("Failed to search vehicles");
-      }
-    } catch (e) {
-      onError("An error occurred while searching vehicles: $e");
     }
   }
 }

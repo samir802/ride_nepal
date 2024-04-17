@@ -18,8 +18,12 @@ class History extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("History"),
+        title: const Text(
+          "History",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.green,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -62,158 +66,147 @@ class HistoryListCard extends StatelessWidget {
 
   final OrderDetails history;
   final a = Get.put(CancelOrderController());
+
   @override
   Widget build(BuildContext context) {
     Color containerColor;
-    Color textColor;
 
     switch (history.status) {
       case 'Completed':
         containerColor = Colors.green;
-        textColor = Colors.white;
         break;
       case 'Pending':
         containerColor = Colors.blue;
-        textColor = Colors.white;
         break;
       case 'Cancelled':
         containerColor = Colors.red;
-        textColor = Colors.white;
         break;
       default:
         containerColor = Colors.grey; // Setting default color to grey
-        textColor = Colors.black;
         break;
     }
 
     DateTime rentedDateTime =
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(history.rentedDate!);
     Duration difference = DateTime.now().difference(rentedDateTime);
+    bool canCancel = difference.inMinutes < 30 && history.status != 'Cancelled';
+    bool canReview =
+        difference.inMinutes >= 30 && history.status != 'Cancelled';
 
     return Padding(
-      padding: const EdgeInsets.only(left: 19, right: 19, top: 20),
-      child: InkWell(
-        onTap: () {
-          if (difference.inMinutes >= 30 ||
-              (history.status == 'Cancelled' && difference.inMinutes < 30)) {
-            Get.to(OrderDetailsClass(historyDetails: history));
-          }
-        },
-        child: Container(
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(4, 4),
-                blurRadius: 9,
-                color: const Color(0xFF494949).withOpacity(0.5),
-              )
-            ],
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 5.0),
-                child: Container(
-                  width: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: CachedNetworkImageProvider(
-                        "${Api.imageFolderPath}${history.vehicleImage}",
-                      ),
-                    ),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 2),
+              blurRadius: 6,
+              color: Colors.grey.withOpacity(0.3),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(
+                    "${Api.imageFolderPath}${history.vehicleImage}",
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Name: ${history.name ?? ""}",
-                    style: CustomTextStyles.f14W400(),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "Email: ${history.email ?? ""}",
-                    style: CustomTextStyles.f14W400(),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "Total Price: ${history.totalPrice ?? ""}",
-                    style: CustomTextStyles.f14W400(),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 85,
-                        decoration: BoxDecoration(
-                          color: containerColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      history.vehicleBrand ?? " ",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      history.rentedDate ?? "",
+                      style: CustomTextStyles.f14W400(),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "Rs ${history.totalPrice ?? ""}",
+                      style: CustomTextStyles.f14W400(),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
                           ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              history.status ?? " ",
-                              style: TextStyle(color: textColor),
+                          decoration: BoxDecoration(
+                            color: containerColor.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            history.status ?? " ",
+                            style: TextStyle(
+                              color: containerColor,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      if (history.status != 'Cancelled' &&
-                          difference.inMinutes < 30)
-                        InkWell(
-                          onTap: () {
-                            a.onSubmit(history.orderId ?? "");
-                          },
-                          child: Container(
-                            width: 80,
-                            height: 30,
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(5.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Cancel",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Icon(
-                                    Icons.close,
-                                    size: 23,
-                                    color: Colors.white,
-                                  ),
-                                ],
+                        if (canCancel)
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              a.onSubmit(history.orderId ?? "");
+                            },
+                            icon: const Icon(Icons.close),
+                            label: const Text("Cancel"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                           ),
-                        ),
-                    ],
-                  )
-                ],
+                        if (canReview)
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Get.to(OrderDetailsClass(
+                                historyDetails: history,
+                              ));
+                            },
+                            icon: const Icon(Icons.star),
+                            label: const Text("Review"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.amber,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

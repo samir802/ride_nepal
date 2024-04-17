@@ -11,9 +11,12 @@ class AllVehicles {
   String? fuelConsumption;
   String? drivingMethod;
   String? fuelType;
+  String? vehicleType;
   String? price;
   String? vehicleImage;
+  String? companyId;
   String? companyName;
+  String? companyLogo;
   String? name;
   String? phone;
   String? address;
@@ -30,9 +33,12 @@ class AllVehicles {
       this.fuelConsumption,
       this.drivingMethod,
       this.fuelType,
+      this.vehicleType,
       this.price,
       this.vehicleImage,
+      this.companyId,
       this.companyName,
+      this.companyLogo,
       this.name,
       this.phone,
       this.address,
@@ -49,9 +55,12 @@ class AllVehicles {
     fuelConsumption = json['Fuel_consumption'];
     drivingMethod = json['Driving_method'];
     fuelType = json['FuelType'];
+    vehicleType = json['Vehicle_Type'];
     price = json['Price'];
     vehicleImage = json['Vehicle_Image'];
+    companyId = json['Company_Id'];
     companyName = json['Company_Name'];
+    companyLogo = json['Company_Logo'];
     name = json['name'];
     phone = json['phone'];
     address = json['address'];
@@ -70,9 +79,12 @@ class AllVehicles {
     data['Fuel_consumption'] = fuelConsumption;
     data['Driving_method'] = drivingMethod;
     data['FuelType'] = fuelType;
+    data['Vehicle_Type'] = vehicleType;
     data['Price'] = price;
     data['Vehicle_Image'] = vehicleImage;
+    data['Company_Id'] = companyId;
     data['Company_Name'] = companyName;
+    data['Company_Logo'] = companyLogo;
     data['name'] = name;
     data['phone'] = phone;
     data['address'] = address;

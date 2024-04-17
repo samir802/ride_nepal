@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:ridenepal/controllers/Phone_controller.dart';
 import 'package:ridenepal/models/all_vehicles.dart';
 import 'package:ridenepal/utils/apis.dart';
-import 'package:ridenepal/utils/colors.dart';
 import 'package:ridenepal/utils/image_path.dart';
 import 'package:ridenepal/views/booking_process.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SpecificationScreen extends StatelessWidget {
   SpecificationScreen({super.key, required this.vehicles});
@@ -91,17 +90,18 @@ class SpecificationScreen extends StatelessWidget {
                         const Text(
                           "Overview",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green),
                         ),
                         ExpandableText(
                           vehicles.vehicleInfo ?? '',
-                          style:
-                              const TextStyle(color: AppColors.textGreyColor),
+                          style: const TextStyle(color: Colors.grey),
                           textAlign: TextAlign.justify,
                           expandText: 'Read more',
                           collapseText: 'Read less',
                           maxLines: 2,
-                          linkColor: AppColors.secondaryColor1,
+                          linkColor: Colors.blue,
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -160,7 +160,6 @@ class SpecificationScreen extends StatelessWidget {
                                 SizedBox(
                                   width: 40,
                                   height: 40,
-                                  // color: Colors.black,
                                   child: SvgPicture.asset(
                                     ImagePath.fuel,
                                   ),
@@ -183,7 +182,112 @@ class SpecificationScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: SizedBox(
+                            width: Get.width,
+                            height: MediaQuery.of(context).size.height / 2.3,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Company",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                          "${Api.imageFolderPath}${vehicles.companyLogo}",
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            vehicles.companyName ?? " ",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(vehicles.email ?? ""),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  const Text(
+                                    "Owner",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                          "${Api.imageFolderPath}${vehicles.image}",
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            vehicles.name ?? " ",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(vehicles.phone ?? ""),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(vehicles.address ?? ""),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  CustomLargeElevatedButton(
+                                      title: "Call",
+                                      onTap: () {
+                                        c.launchPhoneNumber(
+                                            vehicles.phone ?? " ");
+                                      }),
+                                ]),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -192,23 +296,16 @@ class SpecificationScreen extends StatelessWidget {
                             "${Api.imageFolderPath}${vehicles.image}"),
                       ),
                       const SizedBox(width: 20),
-                      Text(
-                        vehicles.companyName ?? " ",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      const SizedBox(width: 20),
-                      InkWell(
-                        onTap: () {
-                          c.launchPhoneNumber(vehicles.phone ?? " ");
-                        },
-                        child: SizedBox(
-                          width: 35,
-                          height: 35,
-                          child: SvgPicture.asset(
-                            ImagePath.phone,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            vehicles.companyName ?? " ",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                        ),
+                          Text(vehicles.address ?? "")
+                        ],
                       ),
                     ],
                   ),
@@ -244,14 +341,18 @@ class SpecificationScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                  width: 150,
-                  child: CustomLargeElevatedButton(
-                      title: "Rent Now",
-                      onTap: () {
-                        Get.to(() => BookingProcess(
-                              vehicles: vehicles,
-                            ));
-                      })),
+                width: 150,
+                child: CustomLargeElevatedButton(
+                  title: "Rent Now",
+                  onTap: () {
+                    Get.to(
+                      () => BookingProcess(
+                        vehicles: vehicles,
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

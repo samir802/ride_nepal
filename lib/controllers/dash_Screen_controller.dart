@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ridenepal/views/Profile_screen.dart';
+import 'package:ridenepal/views/profile_screen.dart';
 import 'package:ridenepal/views/all_vehicles_screen.dart';
 import 'package:ridenepal/views/history.dart';
 import '../views/home_screen.dart';
 
 class DashScreenController extends GetxController {
-  // final key = GlobalKey<ScaffoldState>();
-  // final List<Widget> pages = [
-  //   HomeScreen(),
-  //   AllVehicleScreen(),
-  //   History(),
-  //   ProfileScreen(),
-  // ];
-
-  final key = GlobalKey<ScaffoldState>();
   RxList<Widget> pages = RxList(
     [
       HomeScreen(),

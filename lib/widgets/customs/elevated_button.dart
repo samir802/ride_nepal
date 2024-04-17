@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/colors.dart';
 import '../../utils/custom_text_style.dart';
 
 class CustomLargeElevatedButton extends StatelessWidget {
@@ -23,7 +22,7 @@ class CustomLargeElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.secondaryColor1,
+            backgroundColor: Colors.green,
             minimumSize: Size.fromHeight(height),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10))),

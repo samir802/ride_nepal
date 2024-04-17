@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ridenepal/models/all_vehicles.dart';
 import 'package:ridenepal/repo/vehicle_repo.dart';
@@ -22,6 +21,8 @@ class VehicleScreenController extends GetxController {
       onSuccess: (allVehicles) {
         loading.value = false;
         vehicleDetails.addAll(allVehicles);
+        // Initially display all vehicles
+        // displayVehicleDetails.assignAll(vehicleDetails);
       },
       onError: ((message) {
         loading.value = false;
@@ -44,12 +45,24 @@ class VehicleScreenController extends GetxController {
     );
   }
 
-  final searchResults = List<Map<String, dynamic>>.empty().obs;
-  final FocusNode focusNode = FocusNode();
-  TextEditingController searchController = TextEditingController();
+  // TextEditingController searchController = TextEditingController();
+  // var isTextFieldSelected = false.obs;
 
-  Future<void> searchMenuItems(String query) async {
-    final data = await VehicleRepo.searchMenuItems(query);
-    searchResults.assignAll(data);
-  }
+  // void filterVehicle(String query) {
+  //   if (query.isEmpty) {
+  //     displayVehicleDetails.assignAll(vehicleDetails);
+  //   } else {
+  //     displayVehicleDetails.assignAll(vehicleDetails.where((vehicle) =>
+  //         vehicle.vehicleBrand?.toLowerCase().contains(query.toLowerCase()) ??
+  //         false));
+  //   }
+  // }
+
+  // void onSearchQueryChanged(String query) {
+  //   filterVehicle(query);
+  // }
+
+  // void setIsTextFieldSelected(bool isSelected) {
+  //   isTextFieldSelected.value = isSelected;
+  // }
 }

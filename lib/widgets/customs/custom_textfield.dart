@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../utils/colors.dart';
 import '../../utils/custom_text_style.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -26,7 +25,7 @@ class CustomTextField extends StatelessWidget {
   final TextCapitalization textCapitalization;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     this.fillColor,
     required this.hint,
     this.preIconPath,
@@ -46,7 +45,7 @@ class CustomTextField extends StatelessWidget {
     this.maxCharacters,
     this.focusNode,
     this.labelText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,7 @@ class CustomTextField extends StatelessWidget {
             ? Text(
                 labelText ?? "",
                 style: CustomTextStyles.f16W400(
-                  color: AppColors.secondaryColor,
+                  color: Colors.grey,
                 ),
               )
             : null,
@@ -84,29 +83,25 @@ class CustomTextField extends StatelessWidget {
             ? SvgPicture.asset(suffixIconPath!, fit: BoxFit.scaleDown)
             : null,
         enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 2, color: border ?? AppColors.secondaryColor),
+          borderSide: BorderSide(width: 2, color: border ?? Colors.grey),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 2, color: border ?? AppColors.errorColor),
+          borderSide: BorderSide(width: 2, color: border ?? Colors.red),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 2, color: border ?? AppColors.secondaryColor),
+          borderSide: BorderSide(width: 2, color: border ?? Colors.black),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 2, color: border ?? AppColors.errorColor),
+          borderSide: BorderSide(width: 2, color: border ?? Colors.red),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -115,10 +110,10 @@ class CustomTextField extends StatelessWidget {
             ? const TextStyle(fontSize: 12)
             : const TextStyle(fontSize: 0),
         hintText: hint,
-        hintStyle: CustomTextStyles.f16W400(color: AppColors.shimmerBase),
+        hintStyle: CustomTextStyles.f16W400(color: Colors.grey),
       ),
       style: CustomTextStyles.f16W400(
-          color: (readOnly ?? false) ? AppColors.shimmerBase : null),
+          color: (readOnly ?? false) ? Colors.grey : null),
     );
   }
 }

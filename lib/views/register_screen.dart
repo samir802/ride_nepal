@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gif/gif.dart';
 import 'package:ridenepal/views/login_screen.dart';
 
 import '../controllers/register_controller.dart';
-import '../utils/colors.dart';
 import '../utils/image_path.dart';
 import '../utils/validator.dart';
 import '../widgets/customs/custom_password_fields.dart';
@@ -18,23 +19,12 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backGroundColor,
       body: SafeArea(
           child: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              const CircleAvatar(
-                radius: 100,
-                backgroundImage: AssetImage(ImagePath.logo),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               const Text(
                 "Register Here",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -47,10 +37,49 @@ class RegisterScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Form(
-                      key: c.formKey,
+                      key: c.registerKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Center(
+                            child: Obx(
+                              () => CircleAvatar(
+                                radius: 60,
+                                child: ClipOval(
+                                  child: (c.profile.value != null)
+                                      ? Image.file(
+                                          c.profile.value!,
+                                          fit: BoxFit.cover,
+                                          height: 120,
+                                          width: 120,
+                                        )
+                                      : const CircleAvatar(
+                                          radius: 60,
+                                          backgroundImage: AssetImage(
+                                              ImagePath.defaultProfile),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              c.pickImage();
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.edit,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  "Choose Photo",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
                           const Text(
                             "Full Name",
                           ),
