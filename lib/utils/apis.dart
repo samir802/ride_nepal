@@ -1,15 +1,15 @@
 class Api {
-  static const String baseUrl = "http://192.168.1.66/RideShare-admin";
-
-  // static const String baseUrl = "http://172.16.18.70/RideShare-admin";
-
-  // static const String baseUrl = "http://172.16.19.145/RideShare-admin";
+  static const String baseUrl = "http://10.0.2.2/RideNepal-admin";
 
   static const String imageFolderPath = "$baseUrl/uploads/";
   static const String loginUrl = "$baseUrl/api/login.php";
+  static const String chnageProfilePassword =
+      "$baseUrl/api/forget_password.php";
   static const String registerUrl = "$baseUrl/api/register_user.php";
   static const String getVehicle = "$baseUrl/api/vehicles.php";
   static const String getPopularVehicle = "$baseUrl/api/popularVehicle.php";
+  static const String getMostRentedVehicle =
+      "$baseUrl/api/get_most_rented_vehicle.php";
   static const String addRating = "$baseUrl/api/addRating.php";
   static const String addBooking = "$baseUrl/api/store_order.php";
   static const String getHistory = "$baseUrl/api/get_order.php";

@@ -13,7 +13,6 @@ class CancelOrderController extends GetxController {
       context: Get.context!, barrierDimisable: false);
 
   void onSubmit(String orderId) async {
-    log("Controller:$orderId");
     await CancelOrderRepo.cancelOrder(
         orderID: orderId,
         onSuccess: (message) async {

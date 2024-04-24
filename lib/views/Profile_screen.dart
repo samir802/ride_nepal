@@ -5,7 +5,7 @@ import 'package:ridenepal/controllers/core_controller.dart';
 import 'package:ridenepal/controllers/get_profile_controller.dart';
 import 'package:ridenepal/models/profile_details.dart';
 import 'package:ridenepal/utils/apis.dart';
-import 'package:ridenepal/views/change_password_with_email.dart';
+import 'package:ridenepal/views/change_profile_password.dart';
 import 'package:ridenepal/views/edit_profile_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -121,6 +121,7 @@ class ProfileScreen extends StatelessWidget {
                   title: const Text('Change Password'),
                   leading: const Icon(Icons.lock),
                   onTap: () {
+                    Get.to(ChangeProfilePassword());
                     // Get.to(EmailPasswordChange());
                     // Get.to(OTPVerificationPage());
                   },

@@ -20,7 +20,7 @@ class History extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "History",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.green,
@@ -159,7 +159,6 @@ class HistoryListCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: containerColor.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(

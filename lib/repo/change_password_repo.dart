@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:ridenepal/controllers/core_controller.dart';
 import 'package:ridenepal/utils/apis.dart';
+
+final c = Get.put(CoreController());
 
 class ChangePasswordRepo {
   // static Future<void> sendOTP({
@@ -40,6 +44,55 @@ class ChangePasswordRepo {
   //     onError("Sorry! something went wrong $e");
   //   }
   // }
+  static Future<void> changeProfilePassword({
+    required String oldpassword,
+    required String newpassword,
+    required Function(String successMessage) onSuccess,
+    required Function(String errorMessage) onError,
+  }) async {
+    try {
+      var headers = {
+        "Accept": "application/json",
+      };
+      var body = {
+        "oldPassword": oldpassword,
+        "newPassword": newpassword,
+        "userId": c.currentUser.value?.id
+      };
+      http.Response response = await http.post(
+          Uri.parse(Api.chnageProfilePassword),
+          headers: headers,
+          body: body);
+      dynamic data = jsonDecode(response.body);
+
+      // Check if response status code indicates success
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        if (response.headers['content-type']?.contains('application/json') ??
+            false) {
+          if (data.containsKey("status")) {
+            if (data["status"] == "error" && data.containsKey("message")) {
+              if (data["message"] == "Old password is incorrect") {
+                onError("Old password is incorrect");
+              } else {
+                onError(data["message"]);
+              }
+            } else {
+              onSuccess(data['message']);
+            }
+          }
+        } else {
+          // Response is not JSON
+          onError("Response is not JSON.");
+        }
+      } else {
+        onError(data['message']);
+      }
+    } catch (e) {
+      // If an error occurs, return the error message
+      onError("Sorry! Something went wrong: $e");
+      log("$e");
+    }
+  }
 
   static Future<void> sendOTP({
     required String email,
@@ -63,8 +116,6 @@ class ChangePasswordRepo {
 
       if (jsonBody != null) {
         if (response.statusCode >= 200 && response.statusCode < 300) {
-          // Check if data contains status and message
-
           if (response.headers['content-type']?.contains('application/json') ??
               false) {
             dynamic data = jsonDecode(jsonBody);
@@ -93,6 +144,7 @@ class ChangePasswordRepo {
 
   static Future<void> verifyOTP({
     required String otp,
+    required String email,
     required Function(String successMessage) onSuccess,
     required Function(String errorMessage) onError,
   }) async {
@@ -103,6 +155,7 @@ class ChangePasswordRepo {
       };
       var body = {
         "otp": otp,
+        "email": email,
       };
       http.Response response = await http.post(Uri.parse(Api.verifyOTP),
           headers: headers, body: body);

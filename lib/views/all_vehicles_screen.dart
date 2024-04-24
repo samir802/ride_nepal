@@ -16,7 +16,7 @@ class AllVehicleScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Vehicles",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.green,

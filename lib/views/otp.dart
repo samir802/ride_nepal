@@ -4,7 +4,8 @@ import 'package:ridenepal/controllers/change_profile_screen_controller.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
 
 class OTPVerificationPage extends StatelessWidget {
-  OTPVerificationPage({super.key});
+  OTPVerificationPage({super.key, required this.email});
+  final email;
   final c = Get.put(ChangeProfileController());
 
   @override
@@ -61,20 +62,23 @@ class OTPVerificationPage extends StatelessWidget {
               CustomLargeElevatedButton(
                   title: "Verfiy",
                   onTap: () {
-                    c.verifyOTP(c.otpController.text);
-                  })
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     const Text("Didn't recieve the verfication OTP ?"),
-              //     InkWell(
-              //       onTap: () {
-              //         c.sendEmail(email);
-              //       },
-              //       child: const Text("Resend"),
-              //     ),
-              //   ],
-              // ),
+                    c.verifyOTP(
+                      c.otpController.text,
+                      email,
+                    );
+                  }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Didn't recieve the verfication OTP ?"),
+                  InkWell(
+                    onTap: () {
+                      c.sendEmail(email);
+                    },
+                    child: const Text("Resend"),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

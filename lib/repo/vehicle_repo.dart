@@ -54,4 +54,29 @@ class VehicleRepo {
       CustomSnackBar.error(title: "Popular Vehicle", message: "$e");
     }
   }
+
+  static Future<void> getMostRentedVehicle({
+    required Function(List<AllVehicles> category) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      var header = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      };
+      http.Response response = await http.get(
+        Uri.parse(Api.getMostRentedVehicle),
+        headers: header,
+      );
+      dynamic data = json.decode(response.body);
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        List<AllVehicles> vehicle = allVehiclesFromJson(data["data"]);
+        onSuccess(vehicle);
+      } else {
+        onError(data['message']);
+      }
+    } catch (e) {
+      CustomSnackBar.error(title: "Most Rented Vehicle", message: "$e");
+    }
+  }
 }

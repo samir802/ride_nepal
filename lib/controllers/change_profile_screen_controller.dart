@@ -1,10 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import "package:async/async.dart";
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:otp_text_field/otp_field.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -19,13 +16,17 @@ import 'package:ridenepal/views/change_password.dart';
 import 'package:ridenepal/views/dash_screen.dart';
 import 'package:ridenepal/views/login_screen.dart';
 import 'package:ridenepal/views/otp.dart';
+import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 final c = Get.put(CoreController());
 final d = Get.put(GetProfileController());
 
 class ChangeProfileController extends GetxController {
   final changePassword = GlobalKey<FormState>();
-  RxBool loading = RxBool(false);
+  // RxBool loading = RxBool(false);
+
+  final loading = SimpleFontelicoProgressDialog(
+      context: Get.context!, barrierDimisable: false);
   RxBool passwordObscure = true.obs;
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -82,33 +83,36 @@ class ChangeProfileController extends GetxController {
         phone: phone,
         address: address,
         onSuccess: (message) async {
-          loading.value = false;
+          loading.show(message: "Please wait..");
           CustomSnackBar.success(
               title: "Update", message: "Updated Successfully");
           await Get.off(DashScreen());
         },
         onError: (message) {
-          loading.value = false;
+          loading.hide();
           CustomSnackBar.error(title: "Updated", message: "Failed in updating");
         });
   }
 
   void sendEmail(String recipientEmail) {
+    loading.show(message: "Please wait..");
     ChangePasswordRepo.sendOTP(
         email: recipientEmail,
         onSuccess: (message) async {
+          loading.hide();
           CustomSnackBar.success(
               title: "OTP", message: "OTP send successfully");
-          Get.to(OTPVerificationPage());
+          Get.to(OTPVerificationPage(email: recipientEmail));
         },
         onError: (message) {
           CustomSnackBar.error(title: "OTP", message: message);
         });
   }
 
-  void verifyOTP(String otp) {
+  void verifyOTP(String otp, String recipientEmail) {
     ChangePasswordRepo.verifyOTP(
         otp: otp,
+        email: recipientEmail,
         onSuccess: (message) async {
           CustomSnackBar.success(
               title: "OTP Verification", message: "OTP Verified");
@@ -118,27 +122,6 @@ class ChangeProfileController extends GetxController {
           CustomSnackBar.error(title: "OTP", message: message);
         });
   }
-
-  // void sendMail(String recipientEmail, String otp) async {
-  //   final smtpServer = gmail("shresthasammir@gmail.com", "pyuz usbm ryui zvwg");
-
-  //   final message = Message()
-  //     ..from = const Address("shresthasammir@gmail.com")
-  //     ..recipients.add(recipientEmail)
-  //     ..subject = 'Your OTP for verification'
-  //     ..text = 'Your OTP is: $otp';
-
-  //   try {
-  //     final sendReport = await send(message, smtpServer);
-  //     log('Message sent: $sendReport');
-  //     email.clear();
-  //   } on MailerException catch (e) {
-  //     log('Message not sent. $e');
-  //     for (var p in e.problems) {
-  //       log('Problem: ${p.code}: ${p.msg}');
-  //     }
-  //   }
-  // }
 
   void onSubmit() async {
     if (changePassword.currentState!.validate() &&

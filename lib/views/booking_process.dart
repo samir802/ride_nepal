@@ -75,7 +75,7 @@ class BookingProcess extends StatelessWidget {
               ),
               Obx(
                 () => CheckboxListTile(
-                  title: const Text("Driver"),
+                  title: const Text("Driver(if needed)"),
                   value: d.driverSelected.value,
                   onChanged: (newValue) {
                     d.driverSelected.value = newValue ?? false;

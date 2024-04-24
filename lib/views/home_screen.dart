@@ -6,13 +6,15 @@ import 'package:ridenepal/controllers/core_controller.dart';
 import 'package:ridenepal/controllers/get_profile_controller.dart';
 import 'package:ridenepal/controllers/vehicle_screen_controller.dart';
 import 'package:ridenepal/models/all_vehicles.dart';
-import 'package:ridenepal/models/profile_details.dart';
 import 'package:ridenepal/utils/apis.dart';
 import 'package:ridenepal/views/Specification_Screen.dart';
+import 'package:ridenepal/views/search_and_filter.dart';
 import 'package:ridenepal/widgets/customs/elevated_button.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  HomeScreen({
+    super.key,
+  });
 
   final c = Get.put(CoreController());
   final d = Get.put(VehicleScreenController());
@@ -23,7 +25,11 @@ class HomeScreen extends StatelessWidget {
     RxList<AllVehicles> vehicleDetails = d.vehicleDetails;
     List<String> imgList = List<String>.from(vehicleDetails
         .map((vehicle) => "${Api.baseUrl}/uploads/${vehicle.vehicleImage}"));
-    RxList<ProfileDetails> profileDetails = e.profileDetails;
+
+    // Sort the most rented vehicles alphabetically
+    List<AllVehicles> sortedMostRentedVehicles =
+        List<AllVehicles>.from(d.mostRentedVehicleDetails)
+          ..sort((a, b) => a.vehicleBrand!.compareTo(b.vehicleBrand!));
 
     return Scaffold(
       body: Padding(
@@ -51,30 +57,31 @@ class HomeScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1.5),
                           ),
-                          // Text(profileDetails.first.name ?? "",
-                          //     style: const TextStyle(
-                          //       fontSize: 18,
-                          //     )),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: Get.width,
-                    height: 50,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                    child: const Row(
-                      children: [
-                        SizedBox(width: 10),
-                        Icon(Icons.search),
-                        SizedBox(width: 20),
-                        Text(
-                          "Search Vehicles...",
-                          style: TextStyle(fontSize: 18),
-                        )
-                      ],
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => SearchAndFilter());
+                    },
+                    child: Container(
+                      width: Get.width,
+                      height: 50,
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                      child: const Row(
+                        children: [
+                          SizedBox(width: 10),
+                          Icon(Icons.search),
+                          SizedBox(width: 20),
+                          Text(
+                            "Search Vehicles...",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -113,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Container(
-                    height: 180,
+                    height: 160,
                     width: Get.width,
                     color: Colors.white,
                     child: Obx(
@@ -127,6 +134,44 @@ class HomeScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 AllVehicles vehicles =
                                     d.displayVehicleDetails[index];
+                                return Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                      border: Border.all(
+                                        color: Colors.grey.withOpacity(0.5),
+                                      )),
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: VehicleListCardHome(
+                                    vehicles: vehicles,
+                                  ),
+                                );
+                              },
+                            ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Most Rented",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    height: 160,
+                    width: Get.width,
+                    color: Colors.white,
+                    child: Obx(
+                      () => d.loading.value
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : PageView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: sortedMostRentedVehicles.length,
+                              itemBuilder: (context, index) {
+                                AllVehicles vehicles =
+                                    sortedMostRentedVehicles[index];
                                 return Container(
                                   decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.all(
@@ -230,7 +275,7 @@ class VehicleListCardHome extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Rs${vehicles.price}/day",
+                  "Rs ${vehicles.price}/day",
                 ),
                 const SizedBox(
                   height: 15,
